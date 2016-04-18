@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Angular 2 QuickStart</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+        <link href="assets/css/app.css?v=@version@" rel="stylesheet">
+        <base href="/">
+    </head>
+    <body>
+        <my-app>Loading...</my-app>
+
+        <script src="assets/js/libs.js"></script>
+
+        <script>
+            System.config({
+                packages: {        
+                    app: {
+                        format: 'register',
+                        defaultExtension: 'js'
+                    }
+                }
+            });
+            System.import('app/main')
+                .then(null, console.error.bind(console));
+        </script>
+    </body>
+</html>

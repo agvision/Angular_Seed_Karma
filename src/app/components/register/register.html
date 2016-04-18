@@ -1,0 +1,13 @@
+<div class="container">
+
+    <form class="form-signin">
+        <h2 class="form-signin-heading">{{ ts.get('register.title') }}</h2>
+
+        <input [(ngModel)]="user.firstName" type="text" class="form-control" [placeholder]="ts.get('register.first_name')" required autofocus>
+        <input [(ngModel)]="user.lastName" type="text" class="form-control" [placeholder]="ts.get('register.last_name')" required>
+        <input [(ngModel)]="user.email" type="text" class="form-control" [placeholder]="ts.get('register.email')" required>
+        <input [(ngModel)]="user.password" type="password" class="form-control" [placeholder]="ts.get('register.password')" required>
+
+        <div (click)="onSubmit()" class="btn btn-lg btn-primary btn-block">{{ ts.get('register.action') }}</div>
+    </form>
+</div>
