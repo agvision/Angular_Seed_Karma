@@ -1,11 +1,11 @@
 import {bootstrap}    from 'angular2/platform/browser';
-import {AppComponent} from './components/app';
-
 import {ROUTER_PROVIDERS} from 'angular2/router';
 import {HTTP_PROVIDERS}   from 'angular2/http';
 
-import {HttpService} 		from './services/http';
-import {TranslateService} 	from './services/translate';
+import {AppComponent} from './app/components/app';
+
+import {HttpService} 		from './app/services/http';
+import {TranslateService} 	from './app/services/translate';
 import 'rxjs/Rx';
 
 

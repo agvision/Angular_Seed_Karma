@@ -8,11 +8,11 @@
     "url": "https://github.com/angular/ng-test-seed.git"
   },
   "scripts": {
-    "start": "concurrently \"tsc --watch\" \"gulp watch\" \"npm run serve\" ",
+    "start": "npm run build && concurrently \"tsc --watch\" \"gulp watch\" \"npm run serve\" ",
     "clean": "rimraf public/*",
-    "build": "tsc && gulp --production",
+    "build": "npm run clean && tsc && gulp --production",
     "serve": "lite-server --port=8000",
-    "test": "tsc && (karma start karma.conf.js; npm run report)",
+    "test": "npm run clean && tsc -p tsconfig.test.json && (karma start karma.conf.js; npm run report)",
     "report": "lite-server -c bs-config.report.json",
     "postinstall": "typings install --ambient"
   },
@@ -46,6 +46,7 @@
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.1",
     "karma-cli": "^0.0.4",
+    "karma-coverage": "^0.5.5",
     "karma-htmlfile-reporter": "^0.2.2",
     "karma-jasmine": "^0.3.6",
     "laravel-elixir": "^2.0.0",

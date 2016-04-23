@@ -9,18 +9,16 @@
     <body>
         <my-app>Loading...</my-app>
 
-        <script src="assets/js/libs.js"></script>
+        <script src="assets/js/libs.js?v=@version@"></script>
+        <script src="assets/js/app.js?v=@version@"></script>
 
         <script>
             System.config({
-                packages: {        
-                    app: {
-                        format: 'register',
-                        defaultExtension: 'js'
-                    }
-                }
+                format: 'register',
+                defaultExtension: 'js'
+                
             });
-            System.import('app/main')
+            System.import('main')
                 .then(null, console.error.bind(console));
         </script>
     </body>

@@ -1,7 +1,6 @@
 import {it, describe, expect, inject, injectAsync, beforeEach, beforeEachProviders} from 'angular2/testing';
 
 import {provide} from 'angular2/core';
-import {HTTP_PROVIDERS}   from 'angular2/http';
 import {RouteRegistry, Router, ROUTER_PRIMARY_COMPONENT, Location} from 'angular2/router';
 import {RootRouter} from 'angular2/src/router/router';
 
@@ -13,8 +12,6 @@ describe('Routing', () => {
     let router: Router;
 
     beforeEachProviders(() => [ 
-        HTTP_PROVIDERS, 
-
         RouteRegistry,
         Location,
         provide(Router, {useClass: RootRouter}),

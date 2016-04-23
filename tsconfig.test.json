@@ -8,10 +8,9 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outFile": "public/assets/js/app.js"
+    "outDir": "public"
   },
   "exclude": [
-    "src/test",
     "node_modules",
     "typings/main",
     "typings/main.d.ts"
