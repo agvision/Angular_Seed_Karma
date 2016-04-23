@@ -20,10 +20,13 @@ export class HttpService
 
 	public sendAuthRequest(method: string, path: string, params = new Map<string, any>())
 	{
-		params.set('token', this.getAuthToken());
+
+		let headers = new Headers({
+			'Authorization': 'Bearer ' + this.getAuthToken()
+		});
 
 		return new Promise((resolve, reject) => {
-			this.sendRequest(method, path, params)
+			this.sendRequest(method, path, params, headers)
 				.then((data) => {
 					this.tryTokenRefresh();
 					resolve(data);
@@ -32,20 +35,20 @@ export class HttpService
 		});
 	}
 
-	public sendRequest(method: string, path: string, params = new Map<string, any>())
+	public sendRequest(method: string, path: string, params = new Map<string, any>(), headers = new Headers())
 	{
 		switch (method) {
 			case "GET":
-				return this.get(path, params);
+				return this.get(path, params, headers);
 			
 			case "POST":
-				return this.post(path, params);
+				return this.post(path, params, headers);
 
 			case "PUT":
-				return this.put(path, params);
+				return this.put(path, params, headers);
 
 			case "DELETE":
-				return this.delete(path, params);
+				return this.delete(path, params, headers);
 		}
 	}
 
@@ -87,9 +90,9 @@ export class HttpService
 		}
 	}
 
-	private get(path: string, params: Map<string, any>)
+	private get(path: string, params: Map<string, any>, headers = new Headers())
 	{
-		let {url, body, options} = this.getRequestDetails(path, params);
+		let {url, body, options} = this.getRequestDetails(path, params, headers);
 
 		return new Promise((resolve, reject) => {
 			this.http.get(url + "?" + body, options)
@@ -101,9 +104,9 @@ export class HttpService
 		});
 	}
 
-	private post(path: string, params: Map<string, any>)
+	private post(path: string, params: Map<string, any>, headers = new Headers())
 	{	
-		let {url, body, options} = this.getRequestDetails(path, params);
+		let {url, body, options} = this.getRequestDetails(path, params, headers);
 
 		return new Promise((resolve, reject) => {
 			this.http.post(url, body, options)
@@ -115,9 +118,9 @@ export class HttpService
 		});
 	}
 
-	private put(path: string, params: Map<string, any>)
+	private put(path: string, params: Map<string, any>, headers = new Headers())
 	{	
-		let {url, body, options} = this.getRequestDetails(path, params);
+		let {url, body, options} = this.getRequestDetails(path, params, headers);
 
 		return new Promise((resolve, reject) => {
 			this.http.put(url, body, options)
@@ -129,9 +132,9 @@ export class HttpService
 		});
 	}
 
-	private delete(path: string, params: Map<string, any>)
+	private delete(path: string, params: Map<string, any>, headers = new Headers())
 	{	
-		let {url, body, options} = this.getRequestDetails(path, params);
+		let {url, body, options} = this.getRequestDetails(path, params, headers);
 
 		return new Promise((resolve, reject) => {
 			this.http.delete(url + "?" + body, options)
@@ -143,13 +146,11 @@ export class HttpService
 		});
 	}
 
-	private getRequestDetails(path: string, params: Map<string, any>)
+	private getRequestDetails(path: string, params: Map<string, any>, headers = new Headers())
 	{	
 		let url = this.getRequestURL(path);
 
-		let headers = new Headers({
-			'Content-Type': 'application/x-www-form-urlencoded'
-		});
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
 		let options = new RequestOptions({
 			headers: headers

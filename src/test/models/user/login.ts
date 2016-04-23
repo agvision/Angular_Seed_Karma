@@ -13,6 +13,8 @@ import {AppComponent} from '../../../app/components/app';
 
 describe('User Login', () => {
 
+    let authToken:string = '';
+
     beforeEachProviders(() => [ 
         Http,
         HTTP_PROVIDERS, 
@@ -84,11 +86,47 @@ describe('User Login', () => {
         
         return user.login()
                    .then((data:any) => {
-                       expect(data.token).toBeDefined();
+                       authToken = data.token;
+                       expect(authToken).toBeDefined();
                    })
                    .catch((errors) => {
                        expect("Login").toBe("successful");
                    });
     }));
 
+    it('Should access protected resource', injectAsync([User, HttpService], (user:User, httpService:HttpService) => {
+        httpService.setAuthToken(authToken);
+        
+        return httpService.sendAuthRequest("GET", "/protected")
+                          .then((data) => {
+                              
+                          })
+                          .catch((errors) => {
+                              expect("Request").toBe("successful");
+                          });
+    }));
+
+    it('Should invalidate auth token', injectAsync([User, HttpService], (user:User, httpService:HttpService) => {
+        httpService.setAuthToken(authToken);
+        
+        return user.logout()
+                   .then((data) => {
+
+                   })
+                   .catch((errors) => {
+                       expect("Logout").toBe("successful");
+                   });
+    }));
+
+    it('Should NOT access protected resource', injectAsync([User, HttpService], (user:User, httpService:HttpService) => {
+        httpService.setAuthToken(authToken);
+        
+        return httpService.sendAuthRequest("GET", "/protected")
+                          .then((data) => {
+                              expect("Request").toContain("errors");
+                          })
+                          .catch((errors) => {
+                              expect(errors.has("invalidToken"));
+                          });
+    }));
 });
