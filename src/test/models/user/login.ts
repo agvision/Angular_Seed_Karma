@@ -14,6 +14,9 @@ import {AppComponent} from '../../../app/components/app';
 describe('User Login', () => {
 
     let authToken:string = '';
+    let oldAuthToken:string = '';
+
+    let httpService: HttpService;
 
     beforeEachProviders(() => [ 
         Http,
@@ -27,6 +30,10 @@ describe('User Login', () => {
         User, 
         HttpService,
     ]);
+
+    beforeEach(inject([HttpService], (h) => {
+        httpService = h;
+    }));
 
     it('Should set auth token', inject([User], (user:User) => {
         let token = "h83hdks95gt7";
@@ -94,7 +101,43 @@ describe('User Login', () => {
                    });
     }));
 
-    it('Should access protected resource', injectAsync([User, HttpService], (user:User, httpService:HttpService) => {
+    it('Should access protected resource', injectAsync([User], (user:User) => {
+        httpService.setAuthToken(authToken);
+        
+        return httpService.sendAuthRequest("GET", "/protected")
+                          .then((data) => {
+
+                          })
+                          .catch((errors) => {
+                              expect("Request").toBe("successful");
+                          });
+    }));
+
+    it('Should refresh auth token', (done) => {
+        httpService.setAuthToken(authToken);
+        httpService.setTokenLifetimeLimit(0);
+
+        setTimeout(() => {
+            httpService.sendAuthRequest("GET", "/protected")
+                       .then((data) => {
+                           oldAuthToken = authToken;
+
+                           setTimeout(() => {
+                               authToken = httpService.getAuthToken();
+
+                               expect(authToken.length).toBeGreaterThan(10);
+                               expect(authToken).not.toEqual(oldAuthToken);
+                               done();
+                           }, 500)
+                       })
+                       .catch((errors) => {
+                           expect("Request").toBe("successful");
+                           done();
+                       });
+        }, 500);    
+    });
+
+    it('Should access protected resource new token', injectAsync([User], (user:User) => {
         httpService.setAuthToken(authToken);
         
         return httpService.sendAuthRequest("GET", "/protected")
@@ -106,7 +149,19 @@ describe('User Login', () => {
                           });
     }));
 
-    it('Should invalidate auth token', injectAsync([User, HttpService], (user:User, httpService:HttpService) => {
+    it('Should NOT access protected resource old token', injectAsync([User], (user:User) => {
+        httpService.setAuthToken(oldAuthToken);
+        
+        return httpService.sendAuthRequest("GET", "/protected")
+                          .then((data) => {
+                              expect("Request").toContain("errors");
+                          })
+                          .catch((errors) => {
+                              expect(httpService.getAuthToken()).toEqual("");
+                          });
+    }));
+
+    it('Should invalidate auth token', injectAsync([User], (user:User) => {
         httpService.setAuthToken(authToken);
         
         return user.logout()
@@ -118,7 +173,7 @@ describe('User Login', () => {
                    });
     }));
 
-    it('Should NOT access protected resource', injectAsync([User, HttpService], (user:User, httpService:HttpService) => {
+    it('Should NOT access protected resource', injectAsync([User], (user:User) => {
         httpService.setAuthToken(authToken);
         
         return httpService.sendAuthRequest("GET", "/protected")

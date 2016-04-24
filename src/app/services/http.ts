@@ -58,9 +58,19 @@ export class HttpService
 	}
 
 	public setAuthToken(token: string)
-	{
+	{	
 		localStorage.setItem('authTokenCreationTime', (new Date()).getTime().toString());
 		localStorage.setItem('authToken', token);
+	}
+
+	public getTokenLifeTimeLimit()
+	{
+		return this.tokenLifetimeLimit;
+	}
+
+	public setTokenLifetimeLimit(limit:number)
+	{
+		this.tokenLifetimeLimit = limit;
 	}
 
 	private getTokenLifetime()
@@ -72,7 +82,7 @@ export class HttpService
 	}
 
 	private tryTokenRefresh()
-	{
+	{	
 		let tokenLifetime = this.getTokenLifetime();
 
 		// check token lifetime

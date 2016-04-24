@@ -5,7 +5,6 @@ import {User} from '../models/user';
 
 import {LoginComponent} 	from './login/login';
 import {RegisterComponent} 	from './register/register';
-import {ProfileComponent} 	from './profile/profile';
 
 @Component({
     selector: 	'my-app',
@@ -31,12 +30,7 @@ import {ProfileComponent} 	from './profile/profile';
 		path: '/login',
 		name: 'Login',
 		component: LoginComponent
-	},
-	{
-		path: '/profile',
-		name: 'Profile',
-		component: ProfileComponent
-	},
+	}
 ])
 export class AppComponent 
 { 

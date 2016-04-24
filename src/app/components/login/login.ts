@@ -23,13 +23,6 @@ export class LoginComponent
 				 .catch((errors) => this.handleLoginErrors(errors));
 	}
 
-	public onUserClick()
-	{
-		this.user.getProfile()
-				 .then((data) => this.onGetProfileSuccess(data))
-				 .catch((errors) => this.handleGetProfileErrors(errors));
-	}
-
 	private onLoginSuccess(data: any)
 	{
 		console.log("Login Success");

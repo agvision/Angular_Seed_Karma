@@ -52,9 +52,4 @@ export class User extends Model
 	{
 		return this.httpService.sendAuthRequest("POST", '/auth/logout');
 	}
-
-	public getProfile()
-	{
-		return this.httpService.sendAuthRequest("GET", "/user");
-	}
 }
