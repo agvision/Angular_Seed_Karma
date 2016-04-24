@@ -9,11 +9,12 @@
   },
   "scripts": {
     "start": "npm run build && concurrently \"tsc --watch\" \"gulp watch\" \"npm run serve\" ",
-    "clean": "rimraf public/*",
+    "clean": "rimraf public/* reports",
     "build": "npm run clean && tsc && gulp --production",
     "serve": "lite-server --port=8000",
-    "test": "npm run clean && tsc -p tsconfig.test.json && (karma start karma.conf.js; npm run report)",
-    "report": "lite-server -c bs-config.report.json",
+    "test": "npm run clean && tsc -p tsconfig.test.json && (karma start karma.conf.js; npm run results)",
+    "results": "lite-server -c bs-config.results.json",
+    "coverage": "remap-istanbul -i reports/coverage.json -o reports/coverage -t html && lite-server -c bs-config.coverage.json",
     "postinstall": "typings install --ambient"
   },
   "dependencies": {
@@ -51,6 +52,7 @@
     "karma-jasmine": "^0.3.6",
     "laravel-elixir": "^2.0.0",
     "lite-server": "^2.2.0",
+    "remap-istanbul": "^0.6.3",
     "rimraf": "^2.4.3",
     "typescript": "1.8.9",
     "typings": "^0.6.6",

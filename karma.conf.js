@@ -38,11 +38,26 @@ module.exports = function(config) {
       "/app/": "/base/public/app/"
     },
 
-    htmlReporter: {
-      outputFile: 'report/index.html'
+    preprocessors: {
+      // source files, that you wanna generate coverage for
+      // do not include tests or libraries
+      // (these files will be instrumented by Istanbul)
+      'public/app/**/*.js': ['coverage']
     },
 
-    reporters: ['progress', 'html'],
+    htmlReporter: {
+      outputFile: 'reports/test/index.html'
+    },
+
+    // optionally, configure the reporter
+    coverageReporter: {
+      type: 'json',
+      dir: 'reports/',
+      subdir: '.',
+      file: 'coverage.json'
+    },
+
+    reporters: ['progress', 'html', 'coverage'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
